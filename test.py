@@ -10,6 +10,10 @@ def je_prastevilo(n):
     while kandidat_za_delitelja ** 2 <= n:
         if n % kandidat_za_delitelja == 0:
             return False
-        else:
-            return True
+         else:
+            kandidat_za_delitelja += 2
+     return True
 
+for i in range(200):
+    if je_prastevilo(i):
+        print(i)
