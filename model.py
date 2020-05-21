@@ -7,6 +7,7 @@ NAPACNA_CRKA = "-"
 ZMAGA = "w"
 PORAZ = "x"
 VEC_KOT_ENA =">"
+ZACETEK = "Z"
 
 class Igra:
 
@@ -27,14 +28,10 @@ class Igra:
         return len(self.napacne_crke())
 
     def zmaga(self):
-        for crka in self.geslo:
-            if not crka in self.crke:
-                return False
-            else:
-                return True
+        return all(crka in self.crke for crka in self.geslo)
     
     def poraz(self):
-        return self.stevilo_napak > STEVILO_DOVOLJENIH_NAPAK
+        return self.stevilo_napak() > STEVILO_DOVOLJENIH_NAPAK
 
     def pravilini_del_gesla(self):
         delni =''
@@ -74,5 +71,24 @@ with open("C:\\Users\\teodo\\Desktop\\T\\UVP\\Vislice\\besede.txt", "r", encodin
 def nova_igra():
     return Igra(random.choice(bazen_besed))
 
+class Vislice:
+    
+    def __init__(self):
+        self.igre = {}
 
-igra = Igra("abrakadabra", ["a", "e"])
+    def prost_id_igre(self):
+        if len(self.igre) == 0:
+            return 0
+        else:
+            return max(self.igre.keys()) + 1
+
+    def nova_igra(self):
+        igra = nova_igra()
+        id_igre = self.prost_id_igre()
+        self.igre[id_igre] = (igra, ZACETEK)
+        return id_igre
+
+    def ugibaj(self, id_igre, crka):
+        igra, _ = self.igre[id_igre]
+        poskus = igra.ugibaj(crka)
+        self.igre[id_igre] = (igra, poskus)
